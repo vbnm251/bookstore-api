@@ -5,24 +5,22 @@ import { UserSchema } from './user.model';
 import { USER_MODEL } from './auth.constants';
 import { AuthController } from './auth.controller';
 import { UserService } from './user.service';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { getJwtConfig } from 'src/configs/jwt.config';
-import { AdminJwtStrategy } from './strategy/admin-jwt.strategy';
+import { ConfigModule } from '@nestjs/config';
+import { AccessJwtStrategy } from './strategies/access.strategy';
 import { PassportModule } from '@nestjs/passport';
+import { RefreshJwtStrategy } from './strategies/refresh-strategy';
+import { AccessTokenModule } from './auth-modules/access.module';
+import { RefreshTokenModule } from './auth-modules/refresh.module';
 
 @Module({
 	imports: [
-		// PassportModule,
+		PassportModule,
 		ConfigModule,
 		MongooseModule.forFeature([{ name: USER_MODEL, schema: UserSchema }]),
-		JwtModule.registerAsync({
-			imports: [ConfigModule],
-			inject: [ConfigService],
-			useFactory: getJwtConfig,
-		}),
+		AccessTokenModule,
+		RefreshTokenModule,
 	],
-	providers: [AuthService, UserService, AdminJwtStrategy],
+	providers: [AuthService, UserService, AccessJwtStrategy, RefreshJwtStrategy],
 	controllers: [AuthController],
 })
 export class AuthModule {}

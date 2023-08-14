@@ -1,35 +1,103 @@
-import { Injectable } from '@nestjs/common';
+import {
+	ConflictException,
+	Inject,
+	Injectable,
+	NotFoundException,
+	UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { USER_MODEL } from './auth.constants';
+import {
+	ACCESS_TOKEN_SERVICE,
+	REFRESH_TOKEN_SERVICE,
+	USER_ALREADY_EXISTS,
+	USER_MODEL,
+	USER_NOT_FOUND,
+	WRONG_PASSWORD,
+} from './auth.constants';
 import { Model } from 'mongoose';
 import { Roles, UserModel } from './user.model';
 import { compare, genSalt, hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { JwtPaylod, JwtTokenExpiresIn } from 'src/configs/jwt.config';
+import { RegisterDto } from './dto/register.dto';
+import { UserService } from './user.service';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
 	constructor(
-		@InjectModel(USER_MODEL) private readonly userModel: Model<UserModel>,
-		private readonly jwtService: JwtService,
+		private readonly userService: UserService,
+
+		@Inject(ACCESS_TOKEN_SERVICE)
+		private readonly accessService: JwtService,
+
+		@Inject(REFRESH_TOKEN_SERVICE)
+		private readonly refreshService: JwtService,
 	) {}
 
-	async comparePasswords(password: string, hashedPassword: string) {
+	async register(dto: RegisterDto, role: Roles) {
+		const user = await this.userService.findUser(dto.email, dto.username);
+		if (user) {
+			throw new ConflictException(USER_ALREADY_EXISTS);
+		}
+
+		const passwordHash = await this.generateStringHash(dto.password);
+
+		const createdUser = await this.userService.saveUser(dto, passwordHash, role);
+		const tokens = await this.generateTokens({
+			id: createdUser._id,
+			role: createdUser.role,
+		});
+
+		await this.userService.updateRefreshToken(
+			createdUser._id,
+			await this.generateStringHash(tokens.refreshToken),
+		);
+
+		return tokens;
+	}
+
+	async login(dto: LoginDto) {
+		const user = await this.userService.findUser(dto.email, dto.username);
+		if (!user) {
+			throw new NotFoundException(USER_NOT_FOUND(dto.email ? 'email' : 'username'));
+		}
+
+		const isPasswordCorrect = await this.comparePasswords(
+			dto.password,
+			user.passwordHash,
+		);
+		if (!isPasswordCorrect) {
+			throw new UnauthorizedException(WRONG_PASSWORD);
+		}
+
+		const tokens = await this.generateTokens({ id: user._id, role: user.role });
+
+		await this.userService.updateRefreshToken(
+			user._id,
+			await this.generateStringHash(tokens.refreshToken),
+		);
+
+		return tokens;
+	}
+
+	async refresh(userId: string) {}
+
+	private async comparePasswords(password: string, hashedPassword: string) {
 		return compare(password, hashedPassword);
 	}
 
-	async generatePasswordHash(password: string): Promise<string> {
+	private async generateStringHash(str: string): Promise<string> {
 		const salt = await genSalt(10);
-		return hash(password, salt);
+		return hash(str, salt);
 	}
 
-	async getToken(role: Roles) {
-		const payload = { role };
+	private async generateTokens(payload: JwtPaylod) {
 		return {
-			role,
-			accessToken: await this.jwtService.signAsync(payload, {
-				algorithm: 'HS256',
-				expiresIn: '7d',
-			}),
+			role: payload.role,
+			expiration: JwtTokenExpiresIn,
+			accessToken: await this.accessService.signAsync(payload),
+			refreshToken: await this.refreshService.signAsync(payload),
 		};
 	}
 }

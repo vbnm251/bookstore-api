@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 export class ReviewModel {
 	name: string;
 	title: string;
@@ -5,4 +7,5 @@ export class ReviewModel {
 	advantages: string;
 	disadvantages: string;
 	rating: number;
+	bookId: Types.ObjectId;
 }

@@ -24,6 +24,9 @@ export class UserModel {
 
 	@Prop({ enum: Roles, required: true })
 	role: Roles;
+
+	@Prop()
+	refreshToken: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserModel);
