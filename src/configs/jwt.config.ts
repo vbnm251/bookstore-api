@@ -3,20 +3,19 @@ import { ExtractJwt } from 'passport-jwt';
 import { readFile } from 'fs-extra';
 import { path } from 'app-root-path';
 import { resolve } from 'path';
-import { Roles } from 'src/auth/user.model';
-import { Types } from 'mongoose';
+import { Roles, User, UserInfo } from 'src/auth/entities/user.entity';
 import { readFileSync } from 'fs';
+import { Types } from 'mongoose';
 
 type TokenType = 'access' | 'refresh';
 
-export const JwtTokenExpiresIn = 3600; // 1 hour
+export const JwtTokenExpiresIn = '30d'; // 1 hour (30d for better developing)
 export const RefreshTokenExpiresIn = '20d';
 
 const algorithm = 'RS256';
 
-export interface JwtPaylod {
+export interface JwtPaylod extends UserInfo {
 	id: Types.ObjectId;
-	role: Roles;
 }
 
 const accessSignOptions: JwtSignOptions = {
@@ -52,7 +51,7 @@ export const getJwtStrategyOptions = (tokenType: TokenType) => {
 
 	return {
 		jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-		ignoreExpiration: true,
+		ignoreExpiration: false,
 		secretOrKey: privateKey,
 		algorithms: [algorithm],
 		passReqToCallback: true,

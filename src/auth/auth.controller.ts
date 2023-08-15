@@ -5,6 +5,7 @@ import {
 	HttpCode,
 	HttpStatus,
 	Post,
+	Req,
 	UseGuards,
 	UsePipes,
 	ValidationPipe,
@@ -15,9 +16,9 @@ import { RegisterDto } from './dto/register.dto';
 import { AuthService } from './auth.service';
 import { RoleGuard } from './guards/roles.guard';
 import { RefreshGuard, RefreshJwtGuard } from './guards/refresh-jwt.guard';
-import { Roles } from './user.model';
+import { Roles } from './entities/user.entity';
 import { AccessJwtGuard } from './guards/access-jwt.guard';
-import { UserId } from 'src/decorators/param.decorators';
+import { UserId } from 'src/decorators/jwt-payload.decorators';
 
 @Controller('auth')
 export class AuthController {
@@ -26,7 +27,7 @@ export class AuthController {
 	@Post('register')
 	@UsePipes(new ValidationPipe(validationOptions))
 	async register(@Body() dto: RegisterDto) {
-		return this.authService.register(dto, Roles.COMMON);
+		return this.authService.register(dto, Roles.USER);
 	}
 
 	@Post('addAdmin')
@@ -45,7 +46,7 @@ export class AuthController {
 
 	@Get('refresh')
 	@UseGuards(RefreshJwtGuard, RefreshGuard)
-	async refresh(@UserId() userId: string) {
-		return this.authService.refresh(userId);
+	async refresh(@Req() req: Request) {
+		return this.authService.refresh(req['passedUser']);
 	}
 }

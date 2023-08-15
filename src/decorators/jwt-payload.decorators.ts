@@ -2,5 +2,10 @@ import { ExecutionContext, createParamDecorator } from '@nestjs/common';
 
 export const UserId = createParamDecorator((data: never, ctx: ExecutionContext) => {
 	const request = ctx.switchToHttp().getRequest();
-	return request.user.userId;
+	return request.user.id;
+});
+
+export const Role = createParamDecorator((data: never, ctx: ExecutionContext) => {
+	const request = ctx.switchToHttp().getRequest();
+	return request.user.roles;
 });

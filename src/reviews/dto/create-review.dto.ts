@@ -1,27 +1,32 @@
-import { IsNumber, IsOptional, IsString, Max } from 'class-validator';
+import {
+	IsNotEmpty,
+	IsNumber,
+	IsOptional,
+	IsString,
+	Max,
+	Min,
+	MinLength,
+} from 'class-validator';
 
 export class CreateReviewDto {
 	@IsString()
-	name: string;
-
-	@IsString()
+	@IsNotEmpty()
 	title: string;
 
 	@IsString()
+	@MinLength(50)
 	body: string;
 
 	@IsString()
 	@IsOptional()
 	advantages?: string;
 
-	@IsString()
 	@IsOptional()
+	@IsString()
 	disadvantages?: string;
 
 	@IsNumber()
+	@Min(0)
 	@Max(5)
 	rating: number;
-
-	@IsString()
-	bookId: string;
 }

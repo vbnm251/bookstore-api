@@ -1,20 +1,24 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
-import { USER_COLLECTION } from './auth.constants';
+import { USER_COLLECTION } from '../auth.constants';
 
 export enum Roles {
 	ADMIN = 'admin',
-	COMMON = 'common',
+	USER = 'user',
 }
+
+export type UserInfo = Omit<User, 'passwordHash' | 'refreshToken'>;
 
 @Schema({
 	timestamps: true,
 	collection: USER_COLLECTION,
 	versionKey: 'version',
 })
-export class UserModel {
+export class User {
 	@Prop({ unique: true })
 	username: string;
+
+	@Prop()
+	name: string;
 
 	@Prop({ unique: true })
 	email: string;
@@ -29,4 +33,4 @@ export class UserModel {
 	refreshToken: string;
 }
 
-export const UserSchema = SchemaFactory.createForClass(UserModel);
+export const UserSchema = SchemaFactory.createForClass(User);

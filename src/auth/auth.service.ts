@@ -5,23 +5,21 @@ import {
 	NotFoundException,
 	UnauthorizedException,
 } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import {
 	ACCESS_TOKEN_SERVICE,
 	REFRESH_TOKEN_SERVICE,
 	USER_ALREADY_EXISTS,
-	USER_MODEL,
 	USER_NOT_FOUND,
 	WRONG_PASSWORD,
 } from './auth.constants';
-import { Model } from 'mongoose';
-import { Roles, UserModel } from './user.model';
+import { Roles, User } from './entities/user.entity';
 import { compare, genSalt, hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPaylod, JwtTokenExpiresIn } from 'src/configs/jwt.config';
 import { RegisterDto } from './dto/register.dto';
 import { UserService } from './user.service';
 import { LoginDto } from './dto/login.dto';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class AuthService {
@@ -46,7 +44,10 @@ export class AuthService {
 		const createdUser = await this.userService.saveUser(dto, passwordHash, role);
 		const tokens = await this.generateTokens({
 			id: createdUser._id,
+			email: createdUser.email,
+			name: createdUser.name,
 			role: createdUser.role,
+			username: createdUser.username,
 		});
 
 		await this.userService.updateRefreshToken(
@@ -60,7 +61,7 @@ export class AuthService {
 	async login(dto: LoginDto) {
 		const user = await this.userService.findUser(dto.email, dto.username);
 		if (!user) {
-			throw new NotFoundException(USER_NOT_FOUND(dto.email ? 'email' : 'username'));
+			throw new NotFoundException(USER_NOT_FOUND);
 		}
 
 		const isPasswordCorrect = await this.comparePasswords(
@@ -71,7 +72,13 @@ export class AuthService {
 			throw new UnauthorizedException(WRONG_PASSWORD);
 		}
 
-		const tokens = await this.generateTokens({ id: user._id, role: user.role });
+		const tokens = await this.generateTokens({
+			id: user._id,
+			email: user.email,
+			name: user.name,
+			role: user.role,
+			username: user.username,
+		});
 
 		await this.userService.updateRefreshToken(
 			user._id,
@@ -81,7 +88,21 @@ export class AuthService {
 		return tokens;
 	}
 
-	async refresh(userId: string) {}
+	async refresh(user: User & { _id: Types.ObjectId }) {
+		const tokens = await this.generateTokens({
+			id: user._id,
+			email: user.email,
+			name: user.name,
+			role: user.role,
+			username: user.username,
+		});
+		await this.userService.updateRefreshToken(
+			user._id,
+			await this.generateStringHash(tokens.refreshToken),
+		);
+
+		return tokens;
+	}
 
 	private async comparePasswords(password: string, hashedPassword: string) {
 		return compare(password, hashedPassword);
