@@ -6,39 +6,34 @@ import { Model, Types } from 'mongoose';
 import { Review } from './entities/review.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Roles, User } from 'src/auth/entities/user.entity';
-import { FORBIDDEN_ACCESS, USER_COLLECTION } from 'src/auth/auth.constants';
+import { FORBIDDEN_ACCESS, USER_COLLECTION, USER_MODEL } from 'src/auth/auth.constants';
+import { UserId } from 'src/decorators/jwt-payload.decorators';
 
 @Injectable()
 export class ReviewsService {
-	constructor(@InjectModel(REVIEW_MODEL) private readonly reviewModel: Model<Review>) {}
+	constructor(
+		@InjectModel(REVIEW_MODEL) private readonly reviewModel: Model<Review>,
+		@InjectModel(USER_MODEL) private readonly userModel: Model<User>,
+	) {}
 
-	async create(dto: CreateReviewDto, userId: Types.ObjectId) {
+	async create(dto: CreateReviewDto, userId: Types.ObjectId, bookId: Types.ObjectId) {
 		return this.reviewModel.create({
 			...dto,
-			userId,
+			user: userId,
+			book: bookId,
 		});
 	}
 
 	async findById(reviewId: Types.ObjectId) {
-		const review = (
-			await this.reviewModel
-				.aggregate()
-				.match({ _id: reviewId })
-				.lookup({
-					from: USER_COLLECTION,
-					localField: 'userId',
-					foreignField: '_id',
-					as: 'user',
-				})
-				.unwind('user')
-				.addFields({
-					name: '$user.name',
-				})
-				.project({
-					user: 0,
-				})
-				.exec()
-		)[0] as unknown as (Review & Document & { name: string }) | undefined;
+		const review = await this.reviewModel
+			.findById(reviewId)
+			.populate({
+				path: 'user',
+				select: ['username', 'name'],
+				model: this.userModel,
+			})
+			.exec();
+
 		if (!review) {
 			throw new NotFoundException(REVIEW_NOT_FOUND);
 		}
@@ -48,22 +43,13 @@ export class ReviewsService {
 
 	async findByUserId(userId: Types.ObjectId) {
 		return this.reviewModel
-			.aggregate()
-			.match({ userId })
-			.lookup({
-				from: USER_COLLECTION,
-				localField: 'userId',
-				foreignField: '_id',
-				as: 'user',
+			.find({ user: userId })
+			.populate({
+				path: 'user',
+				select: ['username', 'name'],
+				model: this.userModel,
 			})
-			.unwind('user')
-			.addFields({
-				name: '$user.name',
-			})
-			.project({
-				user: 0,
-			})
-			.exec() as unknown as (Document & User & { name: string })[];
+			.exec();
 	}
 
 	async updateById(
@@ -73,19 +59,26 @@ export class ReviewsService {
 		dto: UpdateReviewDto,
 	) {
 		const review = await this.findById(reviewId);
-		if (role == Roles.USER && review.userId != userId) {
+		if (role == Roles.USER && review.user._id != userId) {
 			throw new ForbiddenException(FORBIDDEN_ACCESS);
 		}
 
-		return this.reviewModel.findByIdAndUpdate(reviewId, dto, { new: true });
+		return this.reviewModel
+			.findByIdAndUpdate(reviewId, dto, { new: true })
+			.populate({
+				path: 'user',
+				select: ['username', 'name'],
+				model: this.userModel,
+			})
+			.exec();
 	}
 
 	async deleteById(reviewId: Types.ObjectId, role: Roles, userId: Types.ObjectId) {
 		const review = await this.findById(reviewId);
-		if (role == Roles.USER && review.userId != userId) {
+		if (role == Roles.USER && review.user._id != userId) {
 			throw new ForbiddenException(FORBIDDEN_ACCESS);
 		}
 
-		await this.reviewModel.findByIdAndRemove(reviewId);
+		await this.reviewModel.findByIdAndRemove(reviewId).exec();
 	}
 }

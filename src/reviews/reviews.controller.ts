@@ -34,9 +34,7 @@ export class ReviewsController {
 		@UserId(ParseObjectIdPipe)
 		userId: Types.ObjectId,
 	) {
-		//TODO: add bookId when books will be finished
-		console.log(bookId);
-		return this.reviewsService.create(dto, userId);
+		return this.reviewsService.create(dto, userId, bookId);
 	}
 
 	@Get('user/:userId')

@@ -36,7 +36,7 @@ export class UserService {
 		dto: RegisterDto,
 		passwordHash: string,
 		role: Roles = Roles.USER,
-	): Promise<Omit<User, 'refreshToken'>> {
+	): Promise<Omit<User, 'refreshToken' | '_id'>> {
 		return {
 			email: dto.email,
 			passwordHash,
