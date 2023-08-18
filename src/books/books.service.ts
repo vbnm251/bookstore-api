@@ -6,8 +6,8 @@ import {
 	DEFAULT_LIMIT,
 	DEFAULT_PAGE,
 } from './books.constants';
-import { Book } from './entitites/book.entity';
-import { Model, PipelineStage, Types } from 'mongoose';
+import { AgeLimit, Book, Order, SortBookValues } from './entitites/book.entity';
+import { Model, PipelineStage, Types, mongo } from 'mongoose';
 import { CreateBookDto } from './dto/create-book.dto';
 import { REVIEW_COLLECTION } from 'src/reviews/review.constants';
 import { PaginationResponse } from 'src/responses/pagination.response';
@@ -72,18 +72,23 @@ export class BooksService {
 	//TODO: add search
 	async getFilteredBooks(
 		genres?: string[],
-		sort?: string,
-		ageLimit?: number,
 		minPrice?: number,
 		maxPrice?: number,
 		page?: number,
 		limit?: number,
 		search?: string,
+		ageLimit?: AgeLimit,
+		sort?: SortBookValues,
+		order?: Order,
 	) {
+		console.log(ageLimit);
+		console.log(sort);
+		console.log(order);
+
 		const genresFilter = genres ? { genres: { $in: genres } } : {};
 		const minPriceFilter = minPrice ? { calculatedPrice: { $gte: minPrice } } : {};
 		const maxPriceFilter = maxPrice ? { calculatedPrice: { $lte: maxPrice } } : {};
-		const ageLimitFilter = ageLimit ? { ageLimit: { $gte: ageLimit } } : {};
+		const ageLimitFilter = ageLimit ? { ageLimit: ageLimit } : {};
 		const searchFilter = search
 			? { $match: { $text: { $search: search, $caseSensitive: false } } }
 			: { $match: {} };
@@ -127,6 +132,20 @@ export class BooksService {
 				},
 			},
 		];
+
+		if (sort) {
+			let mongoOrder: 1 | -1 = 1;
+			if (order == Order.desc) {
+				mongoOrder = -1;
+			}
+
+			switch (sort) {
+				case SortBookValues.PRICE:
+					pipeline.push({ $sort: { calculatedPrice: mongoOrder } });
+				case SortBookValues.RATING:
+					pipeline.push({ $sort: { rating: mongoOrder } });
+			}
+		}
 
 		if (page || limit) {
 			const pageFilter = page || DEFAULT_PAGE;

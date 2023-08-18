@@ -8,7 +8,7 @@ import {
 	IsIn,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { COVERS, CoverType } from '../entitites/book.entity';
+import { AgeLimit, COVERS, CoverType } from '../entitites/book.entity';
 
 class SizeDto {
 	@IsNumber()
@@ -49,8 +49,9 @@ export class CreateBookDto {
 	@IsNumber()
 	publichYear: number;
 
-	@IsNumber()
-	ageLimit: number;
+	@IsEnum(AgeLimit)
+	@IsOptional()
+	ageLimit?: AgeLimit;
 
 	@IsNumber()
 	price: number;

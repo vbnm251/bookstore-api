@@ -5,6 +5,23 @@ import { Types } from 'mongoose';
 export const COVERS = ['hard', 'soft'] as const;
 export type CoverType = (typeof COVERS)[number];
 
+export enum AgeLimit {
+	SIX = 6,
+	TWELVE = 12,
+	SIXTEEN = 16,
+	EIGHTTEEN = 18,
+}
+
+export enum SortBookValues {
+	PRICE = 'price',
+	RATING = 'rating',
+}
+
+export enum Order {
+	asc = 'asc',
+	desc = 'desc',
+}
+
 export class Size {
 	width: number;
 	height: number;
@@ -50,7 +67,7 @@ export class Book {
 	publichYear: number;
 
 	@Prop()
-	ageLimit: number;
+	ageLimit: AgeLimit;
 
 	@Prop()
 	price: number;
@@ -74,8 +91,8 @@ export class Book {
 export const BookSchema = SchemaFactory.createForClass(Book);
 
 BookSchema.index(
-	{ title: 'text', author: 'text', description: 'text' },
-	{ name: 'SearchIndex', weights: { title: 3, author: 2, description: 1 } },
+	{ title: 'text', author: 'text' },
+	{ name: 'SearchIndex', weights: { title: 3, author: 2 } },
 );
 
 BookSchema.virtual('id').get(function () {

@@ -4,6 +4,7 @@ import {
 	Get,
 	Param,
 	ParseArrayPipe,
+	ParseEnumPipe,
 	ParseFloatPipe,
 	ParseIntPipe,
 	Post,
@@ -26,6 +27,8 @@ import { Request, Response } from 'express';
 import { PaginationService } from './pagination.service';
 import { DEFAULT_LIMIT, DEFAULT_PAGE } from './books.constants';
 import { PaginationResponse } from 'src/responses/pagination.response';
+import { AgeLimit, Order, SortBookValues } from './entitites/book.entity';
+import { EnumValidationPipe } from 'src/pipes/enum-validation.pipe';
 
 @Controller('books')
 export class BooksController {
@@ -53,38 +56,44 @@ export class BooksController {
 	async find(
 		@Res() res: Response,
 		@Req() req: Request,
+
 		@Query('genres', new ParseArrayPipe({ optional: true })) genres?: string[],
-		@Query('sort') sort?: string,
-		@Query('ageLimit', new ParseIntPipe({ optional: true })) ageLimit?: number,
 		@Query('minPrice', new ParseFloatPipe({ optional: true })) minPrice?: number,
 		@Query('maxPrice', new ParseFloatPipe({ optional: true })) maxPrice?: number,
 		@Query('page', new ParseIntPipe({ optional: true })) page?: number,
 		@Query('limit', new ParseIntPipe({ optional: true })) limit?: number,
 		@Query('search') search?: string,
+
+		@Query('sort', new EnumValidationPipe(SortBookValues, true))
+		sort?: SortBookValues,
+
+		@Query('ageLimit', new EnumValidationPipe(AgeLimit, true))
+		ageLimit?: AgeLimit,
+
+		@Query('order', new EnumValidationPipe(SortBookValues, true))
+		order?: Order,
 	) {
 		const books = await this.booksService.getFilteredBooks(
 			genres,
-			sort,
-			ageLimit,
 			minPrice,
 			maxPrice,
 			page,
 			limit,
 			search,
+			ageLimit,
+			sort,
+			order,
 		);
 		if (!PaginationService.isPagination(books[0])) {
 			return res.json(books);
 		}
-
-		console.log(books[0]);
 
 		return (
 			await this.paginationService.setXTotalHeaders(
 				res,
 				req,
 				{ pagination: books[0].pagination },
-				page ? page : DEFAULT_PAGE,
-				limit ? limit : DEFAULT_LIMIT,
+				page || DEFAULT_PAGE,
 			)
 		).json(books[0].data);
 	}
