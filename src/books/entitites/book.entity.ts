@@ -2,15 +2,11 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BOOK_COLLECTION } from '../books.constants';
 import { Types } from 'mongoose';
 
-export const COVERS = ['hard', 'soft'] as const;
-export type CoverType = (typeof COVERS)[number];
+export const Covers = ['hard', 'soft'] as const;
+export type CoverType = (typeof Covers)[number];
 
-export enum AgeLimit {
-	SIX = 6,
-	TWELVE = 12,
-	SIXTEEN = 16,
-	EIGHTTEEN = 18,
-}
+export const AgeLimits = [6, 12, 16, 18] as const;
+export type AgeLimit = (typeof AgeLimits)[number];
 
 export enum SortBookValues {
 	PRICE = 'price',
@@ -66,11 +62,11 @@ export class Book {
 	@Prop()
 	publichYear: number;
 
-	@Prop()
+	@Prop({ type: Number })
 	ageLimit: AgeLimit;
 
 	@Prop()
-	price: number;
+	oldPrice: number;
 
 	@Prop()
 	discount?: number;
@@ -99,6 +95,6 @@ BookSchema.virtual('id').get(function () {
 	return this._id.toHexString();
 });
 
-BookSchema.virtual('calculatedPrice').get(function () {
-	return Math.ceil((this.price * (100 - this.discount)) / 100);
+BookSchema.virtual('price').get(function () {
+	return Math.ceil((this.oldPrice * (100 - this.discount)) / 100);
 });

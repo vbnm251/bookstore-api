@@ -1,12 +1,14 @@
 import {
 	Body,
 	Controller,
+	Delete,
 	Get,
 	Param,
 	ParseArrayPipe,
 	ParseEnumPipe,
 	ParseFloatPipe,
 	ParseIntPipe,
+	Patch,
 	Post,
 	Query,
 	Req,
@@ -25,10 +27,11 @@ import { ParseObjectIdPipe } from 'src/pipes/parse-object-id.pipe';
 import { Types } from 'mongoose';
 import { Request, Response } from 'express';
 import { PaginationService } from './pagination.service';
-import { DEFAULT_LIMIT, DEFAULT_PAGE } from './books.constants';
-import { PaginationResponse } from 'src/responses/pagination.response';
-import { AgeLimit, Order, SortBookValues } from './entitites/book.entity';
-import { EnumValidationPipe } from 'src/pipes/enum-validation.pipe';
+import { DEFAULT_PAGE } from './books.constants';
+import { AgeLimit, AgeLimits, Order, SortBookValues } from './entitites/book.entity';
+import { IncludesPipe } from 'src/pipes/includes.pipe';
+import { Role } from 'src/decorators/jwt-payload.decorators';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Controller('books')
 export class BooksController {
@@ -62,25 +65,31 @@ export class BooksController {
 		@Query('maxPrice', new ParseFloatPipe({ optional: true })) maxPrice?: number,
 		@Query('page', new ParseIntPipe({ optional: true })) page?: number,
 		@Query('limit', new ParseIntPipe({ optional: true })) limit?: number,
+		@Query('publishment') publishment?: string,
 		@Query('search') search?: string,
 
-		@Query('sort', new EnumValidationPipe(SortBookValues, true))
+		@Query('sort', new ParseEnumPipe(SortBookValues, { optional: true }))
 		sort?: SortBookValues,
 
-		@Query('ageLimit', new EnumValidationPipe(AgeLimit, true))
+		@Query(
+			'ageLimit',
+			new ParseIntPipe({ optional: true }),
+			new IncludesPipe(AgeLimits, { optional: true }),
+		)
 		ageLimit?: AgeLimit,
 
-		@Query('order', new EnumValidationPipe(SortBookValues, true))
+		@Query('order', new ParseEnumPipe(Order, { optional: true }))
 		order?: Order,
 	) {
 		const books = await this.booksService.getFilteredBooks(
 			genres,
+			publishment,
 			minPrice,
 			maxPrice,
+			ageLimit,
+			search,
 			page,
 			limit,
-			search,
-			ageLimit,
 			sort,
 			order,
 		);
@@ -96,5 +105,22 @@ export class BooksController {
 				page || DEFAULT_PAGE,
 			)
 		).json(books[0].data);
+	}
+
+	@Patch(':bookId')
+	@UseGuards(AccessJwtGuard, RoleGuard(Roles.ADMIN))
+	@UsePipes(new ValidationPipe(validationOptions))
+	async updateById(
+		@Param('bookId', ParseObjectIdPipe) id: Types.ObjectId,
+		@Body() dto: UpdateBookDto,
+	) {
+		return this.booksService.updateById(id, dto);
+	}
+
+	@Delete(':bookId')
+	@UseGuards(AccessJwtGuard, RoleGuard(Roles.ADMIN))
+	@UsePipes(new ValidationPipe(validationOptions))
+	async deleteById(@Param('bookId', ParseObjectIdPipe) id: Types.ObjectId) {
+		return this.booksService.deleteById(id);
 	}
 }

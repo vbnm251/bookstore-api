@@ -1,6 +1,5 @@
 import {
 	IsArray,
-	IsEnum,
 	IsNumber,
 	IsOptional,
 	IsString,
@@ -8,7 +7,8 @@ import {
 	IsIn,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { AgeLimit, COVERS, CoverType } from '../entitites/book.entity';
+import { Covers, CoverType, AgeLimits } from '../entitites/book.entity';
+import { DefaultValuePipe } from '@nestjs/common';
 
 class SizeDto {
 	@IsNumber()
@@ -49,15 +49,16 @@ export class CreateBookDto {
 	@IsNumber()
 	publichYear: number;
 
-	@IsEnum(AgeLimit)
 	@IsOptional()
-	ageLimit?: AgeLimit;
+	@IsIn(AgeLimits)
+	ageLimit?: number;
 
 	@IsNumber()
-	price: number;
+	oldPrice: number;
 
 	@IsNumber()
-	discount?: number;
+	@IsOptional()
+	discount?: number = 0;
 
 	@ValidateNested()
 	@Type(() => SizeDto)
@@ -70,6 +71,6 @@ export class CreateBookDto {
 	weight: number;
 
 	@IsString()
-	@IsIn(COVERS)
+	@IsIn(Covers)
 	coverType: CoverType;
 }

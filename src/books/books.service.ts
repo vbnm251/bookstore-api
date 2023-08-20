@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Type } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import {
 	BOOKS_MODEL,
@@ -11,6 +11,7 @@ import { Model, PipelineStage, Types, mongo } from 'mongoose';
 import { CreateBookDto } from './dto/create-book.dto';
 import { REVIEW_COLLECTION } from 'src/reviews/review.constants';
 import { PaginationResponse } from 'src/responses/pagination.response';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
 export class BooksService {
@@ -18,6 +19,24 @@ export class BooksService {
 
 	async create(dto: CreateBookDto) {
 		return this.booksModel.create(dto);
+	}
+
+	async updateById(id: Types.ObjectId, dto: UpdateBookDto) {
+		const updatedBook = await this.booksModel.findByIdAndUpdate(id, dto, {
+			new: true,
+		});
+		if (!updatedBook) {
+			throw new NotFoundException(BOOK_NOT_FOUND);
+		}
+
+		return updatedBook;
+	}
+
+	async deleteById(id: Types.ObjectId) {
+		const deletedBook = await this.booksModel.findByIdAndDelete(id);
+		if (!deletedBook) {
+			throw new NotFoundException(BOOK_NOT_FOUND);
+		}
 	}
 
 	async findByIdWithReviews(bookId: Types.ObjectId, limit?: number) {
@@ -33,24 +52,17 @@ export class BooksService {
 							foreignField: 'bookId',
 							localField: '_id',
 							as: 'reviews',
-							pipeline: [
-								{
-									$addFields: {
-										id: '$_id',
-									},
-								},
-								{
-									$unset: '_id',
-								},
-							],
+							pipeline: [{ $addFields: { id: '$_id' } }, { $unset: '_id' }],
 						},
 					},
 					{
 						$addFields: {
 							totalReviews: { $size: '$reviews' },
 							rating: { $avg: '$reviews.rating' },
+							id: '$_id',
 						},
 					},
+					{ $unset: '_id' },
 					{
 						$set: limit
 							? {
@@ -69,32 +81,30 @@ export class BooksService {
 		return book;
 	}
 
-	//TODO: add search
 	async getFilteredBooks(
 		genres?: string[],
+		publishment?: string,
 		minPrice?: number,
 		maxPrice?: number,
+		ageLimit?: AgeLimit,
+		search?: string,
 		page?: number,
 		limit?: number,
-		search?: string,
-		ageLimit?: AgeLimit,
 		sort?: SortBookValues,
 		order?: Order,
 	) {
-		console.log(ageLimit);
-		console.log(sort);
-		console.log(order);
-
 		const genresFilter = genres ? { genres: { $in: genres } } : {};
-		const minPriceFilter = minPrice ? { calculatedPrice: { $gte: minPrice } } : {};
-		const maxPriceFilter = maxPrice ? { calculatedPrice: { $lte: maxPrice } } : {};
-		const ageLimitFilter = ageLimit ? { ageLimit: ageLimit } : {};
+		const minPriceFilter = minPrice ? { price: { $gte: minPrice } } : {};
+		const maxPriceFilter = maxPrice ? { price: { $lte: maxPrice } } : {};
+		const ageLimitFilter = ageLimit ? { ageLimit } : {};
+		const publishmentFilter = publishment ? { publishment } : {};
 		const searchFilter = search
 			? { $match: { $text: { $search: search, $caseSensitive: false } } }
 			: { $match: {} };
 
 		const pipeline: PipelineStage[] = [
 			searchFilter,
+
 			{
 				$lookup: {
 					from: REVIEW_COLLECTION,
@@ -105,13 +115,13 @@ export class BooksService {
 			},
 			{
 				$addFields: {
-					calculatedPrice: {
+					price: {
 						$ceil: {
 							$divide: [
 								{
 									$multiply: [
 										{ $subtract: [100, '$discount'] },
-										'$price',
+										'$oldPrice',
 									],
 								},
 								100,
@@ -128,7 +138,26 @@ export class BooksService {
 			},
 			{
 				$match: {
-					$and: [genresFilter, maxPriceFilter, minPriceFilter, ageLimitFilter],
+					$and: [
+						genresFilter,
+						maxPriceFilter,
+						minPriceFilter,
+						ageLimitFilter,
+						publishmentFilter,
+					],
+				},
+			},
+			{
+				$project: {
+					id: 1,
+					title: 1,
+					author: 1,
+					totalReviews: 1,
+					rating: 1,
+					titleImage: 1,
+					oldPrice: 1,
+					price: 1,
+					discount: 1,
 				},
 			},
 		];
@@ -141,9 +170,11 @@ export class BooksService {
 
 			switch (sort) {
 				case SortBookValues.PRICE:
-					pipeline.push({ $sort: { calculatedPrice: mongoOrder } });
+					pipeline.push({ $sort: { price: mongoOrder } });
+					break;
 				case SortBookValues.RATING:
 					pipeline.push({ $sort: { rating: mongoOrder } });
+					break;
 			}
 		}
 
@@ -183,7 +214,7 @@ export class BooksService {
 					(Document &
 						Book & {
 							id: string;
-							calculatedPrice: number;
+							price: number;
 							totalReviews: number;
 							rating: number | null;
 						})[]
@@ -191,7 +222,7 @@ export class BooksService {
 			| (Document &
 					Book & {
 						id: string;
-						calculatedPrice: number;
+						price: number;
 						totalReviews: number;
 						rating: number | null;
 					})[];
