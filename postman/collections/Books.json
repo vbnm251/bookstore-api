@@ -1,0 +1,326 @@
+{
+	"info": {
+		"_postman_id": "f09e0529-7bce-4890-9602-efdbad765b63",
+		"name": "Books",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "25895777-f09e0529-7bce-4890-9602-efdbad765b63"
+	},
+	"item": [
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "create book",
+					"id": "208d0c83-2519-4f5c-8107-d746979e1994",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Дети капитана Гранта\",\n\t\"author\": \"Жюль Верн\",\n\t\"titleImage\": \"ссылка на изображение обложки\",\n\t\"images\": [\"ссылка на изображение 1\", \"ссылка на изображение 2\"],\n\t\"description\": \"Описание книги\",\n\t\"genres\": [\"приключения\", \"научная фантастика\"],\n\t\"publishment\": \"АСТ\",\n\t\"publichYear\": 2023,\n\t\"ageLimit\": 15,\n\t\"price\": 450,\n\t\"discount\": 10,\n\t\"size\": {\n\t\t\"width\": 15,\n\t\t\"height\": 23,\n\t\t\"length\": 2\n\t},\n\t\"pages\": 350,\n\t\"weight\": 0.8,\n\t\"coverType\": \"soft\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/books/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"create"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "e2636856-880b-4340-88e5-c596316ba03a",
+							"name": "create book",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"title\": \"Название книги\",\n\t\"author\": \"Автор книги\",\n\t\"titleImage\": \"ссылка на изображение обложки\",\n\t\"images\": [\"ссылка на изображение 1\", \"ссылка на изображение 2\"],\n\t\"description\": \"Описание книги\",\n\t\"genres\": [\"жанр 1\", \"жанр 2\"],\n\t\"publishment\": \"Издательство\",\n\t\"publichYear\": 2023,\n\t\"ageLimit\": 16,\n\t\"price\": 600,\n\t\"discount\": 10,\n\t\"size\": {\n\t\t\"width\": 15,\n\t\t\"height\": 23,\n\t\t\"length\": 2\n\t},\n\t\"pages\": 350,\n\t\"weight\": 0.8,\n\t\"coverType\": \"hard\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/books/create",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"books",
+										"create"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "634"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"27a-c89NxDKq7B5T7so2kLgjJ+lnUno\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 16 Aug 2023 20:02:17 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"title\": \"Название книги\",\n    \"author\": \"Автор книги\",\n    \"titleImage\": \"ссылка на изображение обложки\",\n    \"images\": [\n        \"ссылка на изображение 1\",\n        \"ссылка на изображение 2\"\n    ],\n    \"description\": \"Описание книги\",\n    \"genres\": [\n        \"жанр 1\",\n        \"жанр 2\"\n    ],\n    \"publishment\": \"Издательство\",\n    \"publichYear\": 2023,\n    \"ageLimit\": 16,\n    \"price\": 600,\n    \"discount\": 10,\n    \"size\": {\n        \"width\": 15,\n        \"height\": 23,\n        \"length\": 2\n    },\n    \"pages\": 350,\n    \"weight\": 0.8,\n    \"coverType\": \"hard\",\n    \"createdAt\": \"2023-08-16T20:02:17.630Z\",\n    \"updatedAt\": \"2023-08-16T20:02:17.630Z\",\n    \"version\": 0,\n    \"id\": \"64dd2b49af7e72b47a8d6946\"\n}"
+						}
+					]
+				}
+			],
+			"id": "b02837ed-ded0-42f9-b347-e4ed28030317",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{admin_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "711db00d-71fa-4d30-badf-8d7fc28b7afc",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "649f3685-c2d9-406d-b553-c6f22a5a0a30",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "get all books",
+			"id": "607dcbe0-7210-438b-b10a-a8639c0d77b0",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/books",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"books"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"key": "genres[]",
+							"value": "роман",
+							"disabled": true
+						},
+						{
+							"key": "genres[]",
+							"value": "жанр 2",
+							"disabled": true
+						},
+						{
+							"key": "sort",
+							"value": "price",
+							"disabled": true
+						},
+						{
+							"key": "ageLimit",
+							"value": "16",
+							"disabled": true
+						},
+						{
+							"key": "maxPrice",
+							"value": "500",
+							"disabled": true
+						},
+						{
+							"key": "minPrice",
+							"value": "300",
+							"disabled": true
+						},
+						{
+							"key": "publishment",
+							"value": null,
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "search",
+							"value": "Преступление и наказание",
+							"disabled": true
+						},
+						{
+							"key": "order",
+							"value": "desc",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get by Bookid",
+			"id": "1ad18682-504b-461f-8dab-a589e632ba8a",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/books/:bookId?limit=2",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"books",
+						":bookId"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "2"
+						}
+					],
+					"variable": [
+						{
+							"key": "bookId",
+							"value": "64dd2b49af7e72b47a8d6946"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "1539b5f4-02c2-4d61-86bc-f4d054b6d4f9",
+					"name": "get by Bookid",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/books/:bookId?limit=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books",
+								":bookId"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "1"
+								}
+							],
+							"variable": [
+								{
+									"key": "bookId",
+									"value": "64dcd3c3aba89191edfb4a51"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "991"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3df-Rp+jWmtKFD5i+CV0qb/n+ZbPTBU\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 16 Aug 2023 15:31:36 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"_id\": \"64dcd3c3aba89191edfb4a51\",\n    \"title\": \"Название книги\",\n    \"author\": \"Автор книги\",\n    \"titleImage\": \"ссылка на изображение обложки\",\n    \"images\": [\n        \"ссылка на изображение 1\",\n        \"ссылка на изображение 2\"\n    ],\n    \"description\": \"Описание книги\",\n    \"genres\": [\n        \"жанр 2\",\n        \"жанр 3\"\n    ],\n    \"publishment\": \"Издательство\",\n    \"publichYear\": 2023,\n    \"ageLimit\": 16,\n    \"price\": 25.99,\n    \"discount\": 10,\n    \"size\": {\n        \"width\": 15,\n        \"height\": 23,\n        \"length\": 2\n    },\n    \"pages\": 350,\n    \"weight\": 0.8,\n    \"coverType\": \"hard\",\n    \"createdAt\": \"2023-08-16T13:48:51.795Z\",\n    \"updatedAt\": \"2023-08-16T13:48:51.795Z\",\n    \"version\": 0,\n    \"reviews\": [\n        {\n            \"_id\": \"64dcd423aba89191edfb4a55\",\n            \"title\": \"test review\",\n            \"body\": \"this is test body this is test body this is test body this is test body \",\n            \"rating\": 4,\n            \"userId\": \"64dbd691d2c818a93dfd75e7\",\n            \"bookId\": \"64dcd3c3aba89191edfb4a51\",\n            \"createdAt\": \"2023-08-16T13:50:27.663Z\",\n            \"updatedAt\": \"2023-08-16T13:50:27.663Z\",\n            \"version\": 0\n        }\n    ],\n    \"totalReviews\": 2,\n    \"rating\": 4.5\n}"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,481 @@
+{
+	"info": {
+		"_postman_id": "54448287-0b9a-4950-b876-4d031a1b28ef",
+		"name": "Reviews",
+		"description": "_This collection contains /reviews endpoints_",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "25895777-54448287-0b9a-4950-b876-4d031a1b28ef"
+	},
+	"item": [
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "get by userId",
+					"id": "f85c8029-09eb-4159-b1c3-e9ff76775b7b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/reviews/user/:userId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"user",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "64dbd691d2c818a93dfd75e7"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "a10d88f6-1c29-4bc4-97ff-f1d490c3e06a",
+							"name": "get by userId",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/reviews/user/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"reviews",
+										"user",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "userId",
+											"value": "64dbd691d2c818a93dfd75e7"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1015"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3f7-T2dU1VOzKLWO1A43/aGLJEiR0Mg\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 16 Aug 2023 13:51:01 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"64dbd8c1d2c818a93dfd7608\",\n        \"title\": \"Test title 2\",\n        \"body\": \"This is test body. Body length must be at least 50 symbols\",\n        \"advantages\": \"test advantages\",\n        \"disadvantages\": \"test disadvantages\",\n        \"rating\": 5,\n        \"userId\": \"64dbd691d2c818a93dfd75e7\",\n        \"createdAt\": \"2023-08-15T19:57:53.100Z\",\n        \"updatedAt\": \"2023-08-15T19:58:42.955Z\",\n        \"version\": 0,\n        \"name\": \"Name\"\n    },\n    {\n        \"_id\": \"64dbd900d2c818a93dfd7610\",\n        \"title\": \"Test title\",\n        \"body\": \"This is test body. Body length must be at least 50 symbols\",\n        \"advantages\": \"test advantages\",\n        \"disadvantages\": \"test disadvantages\",\n        \"rating\": 5,\n        \"userId\": \"64dbd691d2c818a93dfd75e7\",\n        \"createdAt\": \"2023-08-15T19:58:56.005Z\",\n        \"updatedAt\": \"2023-08-15T19:58:56.005Z\",\n        \"version\": 0,\n        \"name\": \"Name\"\n    },\n    {\n        \"_id\": \"64dcd423aba89191edfb4a55\",\n        \"title\": \"test review\",\n        \"body\": \"this is test body this is test body this is test body this is test body \",\n        \"rating\": 4,\n        \"userId\": \"64dbd691d2c818a93dfd75e7\",\n        \"bookId\": \"64dcd3c3aba89191edfb4a51\",\n        \"createdAt\": \"2023-08-16T13:50:27.663Z\",\n        \"updatedAt\": \"2023-08-16T13:50:27.663Z\",\n        \"version\": 0,\n        \"name\": \"Name\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "get by id",
+					"id": "0634c765-d39e-4d01-ae55-40ae03b93724",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/reviews/:reviewId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								":reviewId"
+							],
+							"variable": [
+								{
+									"key": "reviewId",
+									"value": "64dd2eb9756477d6e26efb93"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "39597234-6875-4081-ae3e-f0519f3f4aa1",
+							"name": "get by id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/reviews/:reviewId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"reviews",
+										":reviewId"
+									],
+									"variable": [
+										{
+											"key": "reviewId",
+											"value": "64dd2eb9756477d6e26efb93"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "345"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"159-7OWsrGsb4/vfs7vYovWbxHloWUE\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 16 Aug 2023 20:18:41 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"title\": \"test review\",\n    \"body\": \"this is test body this is test body this is test body this is test body \",\n    \"rating\": 5,\n    \"user\": {\n        \"username\": \"test\",\n        \"name\": \"Name\",\n        \"id\": \"64dbd691d2c818a93dfd75e7\"\n    },\n    \"book\": \"64dd2b49af7e72b47a8d6946\",\n    \"createdAt\": \"2023-08-16T20:16:57.152Z\",\n    \"updatedAt\": \"2023-08-16T20:16:57.152Z\",\n    \"version\": 0,\n    \"id\": \"64dd2eb9756477d6e26efb93\"\n}"
+						}
+					]
+				}
+			],
+			"id": "8b7a402f-79db-4608-a2a6-e90da0cd4dde",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{admin_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "dc75ae8b-9904-403a-8720-7afd6f312059",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0fa101ba-767a-4dbb-8c7c-2251f148f0b6",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "create review",
+					"id": "407e3e48-3cfe-4795-a057-190ec964509d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"test review\",\n    \"body\" : \"this is test body this is test body this is test body this is test body \",\n    \"rating\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/reviews/create/:bookId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"create",
+								":bookId"
+							],
+							"variable": [
+								{
+									"key": "bookId",
+									"value": "64dd2b49af7e72b47a8d6946"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "969ad323-782c-436e-8b98-8c4ef49001c4",
+							"name": "create review",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"test review\",\n    \"body\" : \"this is test body this is test body this is test body this is test body \",\n    \"rating\": 4\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/reviews/create/:bookId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"reviews",
+										"create",
+										":bookId"
+									],
+									"variable": [
+										{
+											"key": "bookId",
+											"value": "64dcd3c3aba89191edfb4a51"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "311"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"137-I9zk6TsZaD9Ye1gfFyoI584Mevc\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 16 Aug 2023 13:50:27 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"title\": \"test review\",\n    \"body\": \"this is test body this is test body this is test body this is test body \",\n    \"rating\": 4,\n    \"userId\": \"64dbd691d2c818a93dfd75e7\",\n    \"bookId\": \"64dcd3c3aba89191edfb4a51\",\n    \"_id\": \"64dcd423aba89191edfb4a55\",\n    \"createdAt\": \"2023-08-16T13:50:27.663Z\",\n    \"updatedAt\": \"2023-08-16T13:50:27.663Z\",\n    \"version\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "New Request",
+					"id": "76adbc59-aea1-4194-93e3-05bf1df07bdd",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "edit my review",
+					"id": "ad8b1beb-fc74-44c4-997b-0f55c1831bad",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"this is new title\",\n    \"rating\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/reviews/:reviewId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								":reviewId"
+							],
+							"variable": [
+								{
+									"key": "reviewId",
+									"value": "64dd2eb9756477d6e26efb93"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete my review",
+					"id": "2d19704d-b87e-4f43-a286-d4f48bf3ff03",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/reviews/:reviewId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								":reviewId"
+							],
+							"variable": [
+								{
+									"key": "reviewId",
+									"value": "64dbd8c1d2c818a93dfd7608"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "my reviews",
+					"id": "ecd3337d-293a-407a-8202-e97acac0fc59",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/reviews/my-reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"my-reviews"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "aa66bcd7-b284-4b4c-97d1-8d045659d946",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{user_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e5b95f5d-b9c0-4b00-bfd6-6e20baa96d13",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "3fe1b190-9c08-4225-a150-8d5d7e7cf26f",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}
