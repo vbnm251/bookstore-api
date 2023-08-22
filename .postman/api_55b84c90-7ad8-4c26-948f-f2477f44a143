@@ -9,7 +9,9 @@ id = 55b84c90-7ad8-4c26-948f-f2477f44a143
 
 [config.relations.collections]
 rootDirectory = postman/collections
+files[] = {"id":"25895777-d80a1e0d-7c09-4137-9d9e-a7d9c78436c9","path":"Auth.json","metaData":{}}
 files[] = {"id":"25895777-f09e0529-7bce-4890-9602-efdbad765b63","path":"Books.json","metaData":{}}
+files[] = {"id":"25895777-2437d620-a9b5-41a1-baff-72d31bb4b691","path":"Cart.json","metaData":{}}
 files[] = {"id":"25895777-54448287-0b9a-4950-b876-4d031a1b28ef","path":"Reviews.json","metaData":{}}
 
 [config.relations.collections.metaData]

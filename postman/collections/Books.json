@@ -20,7 +20,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"title\": \"Дети капитана Гранта\",\n\t\"author\": \"Жюль Верн\",\n\t\"titleImage\": \"ссылка на изображение обложки\",\n\t\"images\": [\"ссылка на изображение 1\", \"ссылка на изображение 2\"],\n\t\"description\": \"Описание книги\",\n\t\"genres\": [\"приключения\", \"научная фантастика\"],\n\t\"publishment\": \"АСТ\",\n\t\"publichYear\": 2023,\n\t\"ageLimit\": 15,\n\t\"price\": 450,\n\t\"discount\": 10,\n\t\"size\": {\n\t\t\"width\": 15,\n\t\t\"height\": 23,\n\t\t\"length\": 2\n\t},\n\t\"pages\": 350,\n\t\"weight\": 0.8,\n\t\"coverType\": \"soft\"\n}",
+							"raw": "{\n\t\"title\": \"Идиот\",\n\t\"author\": \"Федор Достоевский\",\n    \"oldPrice\": 300,\n\t\"genres\": [\"психологический роман\"],\n\t\"titleImage\": \"ссылка на изображение обложки\",\n\t\"images\": [\"ссылка на изображение 1\", \"ссылка на изображение 2\"],\n\t\"description\": \"Описание книги\",\n\t\"publishment\": \"АСТ\",\n\t\"publichYear\": 2023,\n\t\"ageLimit\": 16,\n    \"discount\" : 0,\n\t\"size\": {\n\t\t\"width\": 15,\n\t\t\"height\": 23,\n\t\t\"length\": 2\n\t},\n\t\"pages\": 350,\n\t\"weight\": 0.8,\n\t\"coverType\": \"soft\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -104,6 +104,155 @@
 							"body": "{\n    \"title\": \"Название книги\",\n    \"author\": \"Автор книги\",\n    \"titleImage\": \"ссылка на изображение обложки\",\n    \"images\": [\n        \"ссылка на изображение 1\",\n        \"ссылка на изображение 2\"\n    ],\n    \"description\": \"Описание книги\",\n    \"genres\": [\n        \"жанр 1\",\n        \"жанр 2\"\n    ],\n    \"publishment\": \"Издательство\",\n    \"publichYear\": 2023,\n    \"ageLimit\": 16,\n    \"price\": 600,\n    \"discount\": 10,\n    \"size\": {\n        \"width\": 15,\n        \"height\": 23,\n        \"length\": 2\n    },\n    \"pages\": 350,\n    \"weight\": 0.8,\n    \"coverType\": \"hard\",\n    \"createdAt\": \"2023-08-16T20:02:17.630Z\",\n    \"updatedAt\": \"2023-08-16T20:02:17.630Z\",\n    \"version\": 0,\n    \"id\": \"64dd2b49af7e72b47a8d6946\"\n}"
 						}
 					]
+				},
+				{
+					"name": "edit book",
+					"id": "30dd2e66-9404-4264-9da1-f28a42579d73",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"coverType\" : \"hard\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/books/:bookId?limit=2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books",
+								":bookId"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2"
+								}
+							],
+							"variable": [
+								{
+									"key": "bookId",
+									"value": "64e2550fa745c0d53c12aada"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "8f147eb1-1ee0-49b6-b37f-4e6184fb01dc",
+							"name": "edit book",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"coverType\" : \"hard\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/books/:bookId?limit=2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"books",
+										":bookId"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "2"
+										}
+									],
+									"variable": [
+										{
+											"key": "bookId",
+											"value": "64e2550fa745c0d53c12aada"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "623"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26f-apIi9tbPL6yA4K5Drq2rMweVCL4\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 20 Aug 2023 19:04:02 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"title\": \"Бойцовский клуб\",\n    \"author\": \"Чак Палланик\",\n    \"titleImage\": \"ссылка на изображение обложки\",\n    \"images\": [\n        \"ссылка на изображение 1\",\n        \"ссылка на изображение 2\"\n    ],\n    \"description\": \"Описание книги\",\n    \"genres\": [\n        \"сатира\"\n    ],\n    \"publishment\": \"АСТ\",\n    \"publichYear\": 2023,\n    \"ageLimit\": 16,\n    \"oldPrice\": 700,\n    \"discount\": 0,\n    \"size\": {\n        \"width\": 15,\n        \"height\": 23,\n        \"length\": 2\n    },\n    \"pages\": 350,\n    \"weight\": 0.8,\n    \"coverType\": \"hard\",\n    \"createdAt\": \"2023-08-20T18:01:51.042Z\",\n    \"updatedAt\": \"2023-08-20T19:04:02.395Z\",\n    \"version\": 0,\n    \"id\": \"64e2550fa745c0d53c12aada\",\n    \"price\": 700\n}"
+						}
+					]
+				},
+				{
+					"name": "delete book",
+					"id": "30ddd7a3-95db-4a20-9779-1044f0e586f3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/books/:bookId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books",
+								":bookId"
+							],
+							"variable": [
+								{
+									"key": "bookId",
+									"value": "64e263e366ce7809d8e22899"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"id": "b02837ed-ded0-42f9-b347-e4ed28030317",
@@ -161,7 +310,7 @@
 					"query": [
 						{
 							"key": "limit",
-							"value": "3",
+							"value": "2",
 							"disabled": true
 						},
 						{
@@ -181,7 +330,7 @@
 						},
 						{
 							"key": "sort",
-							"value": "price",
+							"value": "rating",
 							"disabled": true
 						},
 						{
@@ -201,24 +350,148 @@
 						},
 						{
 							"key": "publishment",
-							"value": null,
-							"type": "text",
-							"disabled": true
-						},
-						{
-							"key": "search",
-							"value": "Преступление и наказание",
+							"value": "АСТ",
 							"disabled": true
 						},
 						{
 							"key": "order",
 							"value": "desc",
 							"disabled": true
+						},
+						{
+							"key": "search",
+							"value": "Чак палланик",
+							"disabled": true
 						}
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"id": "6b194aef-9124-4d39-80c1-ca3bedd0656f",
+					"name": "get all books",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/books?limit=2&sort=price&order=desc",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"books"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2"
+								},
+								{
+									"key": "page",
+									"value": "3",
+									"disabled": true
+								},
+								{
+									"key": "genres[]",
+									"value": "роман",
+									"disabled": true
+								},
+								{
+									"key": "genres[]",
+									"value": "жанр 2",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "price"
+								},
+								{
+									"key": "ageLimit",
+									"value": "16",
+									"disabled": true
+								},
+								{
+									"key": "maxPrice",
+									"value": "500",
+									"disabled": true
+								},
+								{
+									"key": "minPrice",
+									"value": "300",
+									"disabled": true
+								},
+								{
+									"key": "publishment",
+									"value": null,
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "order",
+									"value": "desc"
+								},
+								{
+									"key": "search",
+									"value": "Чак палланик",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "X-Total-Pages",
+							"value": "3"
+						},
+						{
+							"key": "X-Total-Count",
+							"value": "5"
+						},
+						{
+							"key": "X-Current-Page",
+							"value": "1"
+						},
+						{
+							"key": "Link",
+							"value": "<http://localhost:3000/api/books?limit=2&sort=price&order=desc&page=2>; rel=\"next\", <http://localhost:3000/api/books?limit=2&sort=price&order=desc&page=1>; rel=\"first\", <http://localhost:3000/api/books?limit=2&sort=price&order=desc&page=3>; rel=\"last\""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1365"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"555-Y9Xig+5Wm/PROScLaMPLoZG+TBw\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 20 Aug 2023 18:29:03 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"title\": \"Бойцовский клуб\",\n        \"author\": \"Чак Палланик\",\n        \"titleImage\": \"ссылка на изображение обложки\",\n        \"images\": [\n            \"ссылка на изображение 1\",\n            \"ссылка на изображение 2\"\n        ],\n        \"description\": \"Описание книги\",\n        \"genres\": [\n            \"сатира\"\n        ],\n        \"publishment\": \"АСТ\",\n        \"publichYear\": 2023,\n        \"ageLimit\": 16,\n        \"oldPrice\": 700,\n        \"discount\": 0,\n        \"size\": {\n            \"width\": 15,\n            \"height\": 23,\n            \"length\": 2\n        },\n        \"pages\": 350,\n        \"weight\": 0.8,\n        \"coverType\": \"soft\",\n        \"createdAt\": \"2023-08-20T18:01:51.042Z\",\n        \"updatedAt\": \"2023-08-20T18:01:51.042Z\",\n        \"version\": 0,\n        \"price\": 700,\n        \"totalReviews\": 0,\n        \"rating\": null,\n        \"id\": \"64e2550fa745c0d53c12aada\"\n    },\n    {\n        \"title\": \"Война и мир\",\n        \"author\": \"Лев Толстой\",\n        \"titleImage\": \"ссылка на изображение обложки\",\n        \"images\": [\n            \"ссылка на изображение 1\",\n            \"ссылка на изображение 2\"\n        ],\n        \"description\": \"Описание книги\",\n        \"genres\": [\n            \"философский роман\",\n            \"психологический роман\"\n        ],\n        \"publishment\": \"АСТ\",\n        \"publichYear\": 2023,\n        \"ageLimit\": 16,\n        \"oldPrice\": 600,\n        \"discount\": 0,\n        \"size\": {\n            \"width\": 15,\n            \"height\": 23,\n            \"length\": 2\n        },\n        \"pages\": 350,\n        \"weight\": 0.8,\n        \"coverType\": \"soft\",\n        \"createdAt\": \"2023-08-20T17:59:37.418Z\",\n        \"updatedAt\": \"2023-08-20T17:59:37.418Z\",\n        \"version\": 0,\n        \"price\": 600,\n        \"totalReviews\": 0,\n        \"rating\": null,\n        \"id\": \"64e25489a745c0d53c12aad6\"\n    }\n]"
+				}
+			]
 		},
 		{
 			"name": "get by Bookid",
@@ -248,7 +521,7 @@
 					"variable": [
 						{
 							"key": "bookId",
-							"value": "64dd2b49af7e72b47a8d6946"
+							"value": "64e2550fa745c0d53c12aada"
 						}
 					]
 				}

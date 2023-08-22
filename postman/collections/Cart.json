@@ -1,0 +1,187 @@
+{
+	"info": {
+		"_postman_id": "2437d620-a9b5-41a1-baff-72d31bb4b691",
+		"name": "Cart",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "25895777-2437d620-a9b5-41a1-baff-72d31bb4b691"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "add to cart",
+					"id": "163d312d-a713-4a03-8120-a5f72d0af1a4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/cart/add/:bookId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"cart",
+								"add",
+								":bookId"
+							],
+							"variable": [
+								{
+									"key": "bookId",
+									"value": "64e38ed349b737a4cf1a2301"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete from card",
+					"id": "80252315-e888-4dd4-8cc8-cc8ce0886417",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/cart/:bookId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"cart",
+								":bookId"
+							],
+							"variable": [
+								{
+									"key": "bookId",
+									"value": "64e38ed349b737a4cf1a230c"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clear cart",
+					"id": "100d4041-44f9-4cf9-98d5-8bc56eee86a1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/cart/clear",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"cart",
+								"clear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get cart",
+					"id": "34435d58-a1a4-432d-a347-25125605ef0d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/cart",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit amount",
+					"id": "5c50996c-393d-4686-b4c9-44001ecf2a2b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/cart/:bookId?amount=2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"cart",
+								":bookId"
+							],
+							"query": [
+								{
+									"key": "amount",
+									"value": "2"
+								}
+							],
+							"variable": [
+								{
+									"key": "bookId",
+									"value": "64e438675d34fd16df5b7462"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "34ecb336-7670-4fb3-96ff-1386bef1f316",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{user_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "07103677-93fe-4bf6-b221-66bcd20ce4ea",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b0412c44-7c61-4d76-9a7b-649be66d94be",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}

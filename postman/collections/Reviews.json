@@ -262,7 +262,7 @@
 							"variable": [
 								{
 									"key": "bookId",
-									"value": "64dd2b49af7e72b47a8d6946"
+									"value": "64e35b58315a560334b92497"
 								}
 							]
 						}
@@ -341,18 +341,6 @@
 					]
 				},
 				{
-					"name": "New Request",
-					"id": "76adbc59-aea1-4194-93e3-05bf1df07bdd",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				},
-				{
 					"name": "edit my review",
 					"id": "ad8b1beb-fc74-44c4-997b-0f55c1831bad",
 					"protocolProfileBehavior": {
@@ -383,7 +371,7 @@
 							"variable": [
 								{
 									"key": "reviewId",
-									"value": "64dd2eb9756477d6e26efb93"
+									"value": "64e35b70315a560334b9249a"
 								}
 							]
 						}
@@ -412,7 +400,7 @@
 							"variable": [
 								{
 									"key": "reviewId",
-									"value": "64dbd8c1d2c818a93dfd7608"
+									"value": "64e35b70315a560334b9249a"
 								}
 							]
 						}
