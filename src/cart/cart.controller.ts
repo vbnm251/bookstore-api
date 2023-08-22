@@ -16,6 +16,8 @@ import { Roles } from 'src/auth/entities';
 import { AccessJwtGuard } from 'src/auth/guards';
 import { RoleGuard, UserId, ParseObjectIdPipe } from 'src/common';
 import { CartService } from './cart.service';
+import { BookExistsGuard } from '../books/guards';
+import { IsInCart } from './guards';
 
 @Controller('cart')
 @UseGuards(AccessJwtGuard, RoleGuard(Roles.USER, Roles.ADMIN))
@@ -24,11 +26,11 @@ export class CartController {
 
 	@Post('add/:bookId')
 	@HttpCode(HttpStatus.OK)
+	@UseGuards(BookExistsGuard)
 	async addProduct(
 		@Param('bookId', ParseObjectIdPipe) bookId: Types.ObjectId,
 		@UserId(ParseObjectIdPipe) userId: Types.ObjectId,
 	) {
-		//FIXME adds null book to cart when bookId is wrong
 		return this.cartService.addProduct(bookId, userId);
 	}
 
@@ -38,6 +40,7 @@ export class CartController {
 	}
 
 	@Patch(':bookId')
+	@UseGuards(IsInCart)
 	async editAmount(
 		@UserId(ParseObjectIdPipe) userId: Types.ObjectId,
 		@Param('bookId', ParseObjectIdPipe) bookId: Types.ObjectId,
@@ -52,6 +55,7 @@ export class CartController {
 	}
 
 	@Delete(':bookId')
+	@UseGuards(IsInCart)
 	async deleteProduct(
 		@UserId(ParseObjectIdPipe) userId: Types.ObjectId,
 		@Param('bookId', ParseObjectIdPipe) bookId: Types.ObjectId,

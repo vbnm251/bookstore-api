@@ -36,7 +36,7 @@ export class CartService {
 	}
 
 	async editAmount(book: Types.ObjectId, user: Types.ObjectId, amount: number) {
-		const cart = await this.cartModel
+		return this.cartModel
 			.findOneAndUpdate(
 				{ user, 'products.book': book },
 				{
@@ -48,12 +48,6 @@ export class CartService {
 			)
 			.populate({ ...bookPopulateOptions, model: this.bookModel })
 			.exec();
-
-		if (!cart) {
-			throw new BadRequestException(WRONG_PRODUCT_ID);
-		}
-
-		return cart;
 	}
 
 	async clearCart(user: Types.ObjectId) {
