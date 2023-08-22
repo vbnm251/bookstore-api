@@ -10,15 +10,12 @@ import {
 	UsePipes,
 	ValidationPipe,
 } from '@nestjs/common';
-import { validationOptions } from 'src/configs/validation.options';
-import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
+import { validationOptions } from 'src/configs';
+import { LoginDto, RegisterDto } from './dto';
 import { AuthService } from './auth.service';
-import { RoleGuard } from './guards/roles.guard';
-import { RefreshGuard, RefreshJwtGuard } from './guards/refresh-jwt.guard';
-import { Roles } from './entities/user.entity';
-import { AccessJwtGuard } from './guards/access-jwt.guard';
-import { UserId } from 'src/decorators/jwt-payload.decorators';
+import { RoleGuard } from 'src/common';
+import { Roles } from './entities';
+import { AccessJwtGuard, RefreshGuard, RefreshJwtGuard } from './guards';
 
 @Controller('auth')
 export class AuthController {
@@ -30,7 +27,7 @@ export class AuthController {
 		return this.authService.register(dto, Roles.USER);
 	}
 
-	@Post('addAdmin')
+	@Post('add-admin')
 	@UseGuards(AccessJwtGuard, RoleGuard(Roles.ADMIN))
 	@UsePipes(new ValidationPipe(validationOptions))
 	async registerAdmin(@Body() dto: RegisterDto) {

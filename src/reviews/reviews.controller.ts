@@ -9,17 +9,17 @@ import {
 	UsePipes,
 	ValidationPipe,
 	UseGuards,
+	SetMetadata,
 } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
-import { CreateReviewDto } from './dto/create-review.dto';
-import { UpdateReviewDto } from './dto/update-review.dto';
-import { Role, UserId } from 'src/decorators/jwt-payload.decorators';
+import { CreateReviewDto, UpdateReviewDto } from './dto';
+import { Role, UserId, ParseObjectIdPipe, RoleGuard } from 'src/common';
 import { Types } from 'mongoose';
-import { ParseObjectIdPipe } from 'src/pipes/parse-object-id.pipe';
-import { validationOptions } from 'src/configs/validation.options';
-import { AccessJwtGuard } from 'src/auth/guards/access-jwt.guard';
-import { RoleGuard } from 'src/auth/guards/roles.guard';
-import { Roles } from 'src/auth/entities/user.entity';
+import { validationOptions } from 'src/configs';
+import { AccessJwtGuard } from 'src/auth/guards';
+import { Roles } from 'src/auth/entities';
+import { ReviewOwnerGuard } from './guards';
+import { GUARD_PROPERTIES } from './review.constants';
 
 @Controller('reviews')
 export class ReviewsController {
@@ -31,8 +31,7 @@ export class ReviewsController {
 	async create(
 		@Body() dto: CreateReviewDto,
 		@Param('bookId', ParseObjectIdPipe) bookId: Types.ObjectId,
-		@UserId(ParseObjectIdPipe)
-		userId: Types.ObjectId,
+		@UserId(ParseObjectIdPipe) userId: Types.ObjectId,
 	) {
 		return this.reviewsService.create(dto, userId, bookId);
 	}
@@ -52,29 +51,24 @@ export class ReviewsController {
 	@Get(':reviewId')
 	@UseGuards(AccessJwtGuard, RoleGuard(Roles.ADMIN))
 	async findById(@Param('reviewId', ParseObjectIdPipe) reviewId: Types.ObjectId) {
-		return this.reviewsService.findById(reviewId);
+		return this.reviewsService.findByIdWithUser(reviewId);
 	}
 
 	@Patch(':reviewId')
-	@UseGuards(AccessJwtGuard, RoleGuard(Roles.USER))
+	@SetMetadata(GUARD_PROPERTIES, ['reviewId', true])
+	@UseGuards(AccessJwtGuard, RoleGuard(Roles.USER, Roles.ADMIN), ReviewOwnerGuard)
 	@UsePipes(new ValidationPipe(validationOptions))
 	async updateById(
 		@Param('reviewId', ParseObjectIdPipe) reviewId: Types.ObjectId,
-		@Body()
-		dto: UpdateReviewDto,
-		@Role() role: Roles,
-		@UserId(ParseObjectIdPipe) userId: Types.ObjectId,
+		@Body() dto: UpdateReviewDto,
 	) {
-		return this.reviewsService.updateById(reviewId, role, userId, dto);
+		return this.reviewsService.updateById(reviewId, dto);
 	}
 
 	@Delete(':reviewId')
-	@UseGuards(AccessJwtGuard, RoleGuard(Roles.USER, Roles.ADMIN))
-	async deleteById(
-		@Param('reviewId', ParseObjectIdPipe) reviewId: Types.ObjectId,
-		@Role() role: Roles,
-		@UserId(ParseObjectIdPipe) userId: Types.ObjectId,
-	) {
-		return this.reviewsService.deleteById(reviewId, role, userId);
+	@SetMetadata(GUARD_PROPERTIES, ['reviewId', true])
+	@UseGuards(AccessJwtGuard, RoleGuard(Roles.USER, Roles.ADMIN), ReviewOwnerGuard)
+	async deleteById(@Param('reviewId', ParseObjectIdPipe) reviewId: Types.ObjectId) {
+		return this.reviewsService.deleteById(reviewId);
 	}
 }

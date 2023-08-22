@@ -8,7 +8,6 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Covers, CoverType, AgeLimits } from '../entitites/book.entity';
-import { DefaultValuePipe } from '@nestjs/common';
 
 class SizeDto {
 	@IsNumber()

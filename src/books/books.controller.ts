@@ -17,21 +17,21 @@ import {
 	UsePipes,
 	ValidationPipe,
 } from '@nestjs/common';
-import { Roles } from 'src/auth/entities/user.entity';
-import { AccessJwtGuard } from 'src/auth/guards/access-jwt.guard';
-import { RoleGuard } from 'src/auth/guards/roles.guard';
-import { validationOptions } from 'src/configs/validation.options';
-import { CreateBookDto } from './dto/create-book.dto';
+import { Roles } from 'src/auth/entities';
+import { AccessJwtGuard } from 'src/auth/guards';
+import { validationOptions } from 'src/configs';
+import { CreateBookDto, UpdateBookDto } from './dto';
 import { BooksService } from './books.service';
-import { ParseObjectIdPipe } from 'src/pipes/parse-object-id.pipe';
 import { Types } from 'mongoose';
 import { Request, Response } from 'express';
-import { PaginationService } from './pagination.service';
+import {
+	PaginationService,
+	IncludesPipe,
+	ParseObjectIdPipe,
+	RoleGuard,
+} from 'src/common';
 import { DEFAULT_PAGE } from './books.constants';
-import { AgeLimit, AgeLimits, Order, SortBookValues } from './entitites/book.entity';
-import { IncludesPipe } from 'src/pipes/includes.pipe';
-import { Role } from 'src/decorators/jwt-payload.decorators';
-import { UpdateBookDto } from './dto/update-book.dto';
+import { AgeLimit, AgeLimits, Order, SortBookValues } from './entitites';
 
 @Controller('books')
 export class BooksController {

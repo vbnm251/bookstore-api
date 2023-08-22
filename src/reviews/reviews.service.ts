@@ -1,13 +1,11 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateReviewDto } from './dto/create-review.dto';
-import { UpdateReviewDto } from './dto/update-review.dto';
+import { CreateReviewDto, UpdateReviewDto } from './dto';
 import { REVIEW_MODEL, REVIEW_NOT_FOUND } from './review.constants';
 import { Model, Types } from 'mongoose';
-import { Review } from './entities/review.entity';
+import { Review } from './entities';
 import { InjectModel } from '@nestjs/mongoose';
-import { Roles, User } from 'src/auth/entities/user.entity';
-import { FORBIDDEN_ACCESS, USER_COLLECTION, USER_MODEL } from 'src/auth/auth.constants';
-import { UserId } from 'src/decorators/jwt-payload.decorators';
+import { Roles, User } from 'src/auth/entities';
+import { FORBIDDEN_ACCESS, USER_MODEL } from 'src/auth/auth.constants';
 
 @Injectable()
 export class ReviewsService {
@@ -24,7 +22,11 @@ export class ReviewsService {
 		});
 	}
 
-	async findById(reviewId: Types.ObjectId) {
+	async findById(id: string) {
+		return this.reviewModel.findById(id);
+	}
+
+	async findByIdWithUser(reviewId: Types.ObjectId) {
 		const review = await this.reviewModel
 			.findById(reviewId)
 			.populate({
@@ -54,15 +56,8 @@ export class ReviewsService {
 
 	async updateById(
 		reviewId: Types.ObjectId,
-		role: Roles,
-		userId: Types.ObjectId,
 		dto: UpdateReviewDto,
 	) {
-		const review = await this.findById(reviewId);
-		if (role == Roles.USER && review.user._id != userId) {
-			throw new ForbiddenException(FORBIDDEN_ACCESS);
-		}
-
 		return this.reviewModel
 			.findByIdAndUpdate(reviewId, dto, { new: true })
 			.populate({
@@ -73,12 +68,7 @@ export class ReviewsService {
 			.exec();
 	}
 
-	async deleteById(reviewId: Types.ObjectId, role: Roles, userId: Types.ObjectId) {
-		const review = await this.findById(reviewId);
-		if (role == Roles.USER && review.user._id != userId) {
-			throw new ForbiddenException(FORBIDDEN_ACCESS);
-		}
-
+	async deleteById(reviewId: Types.ObjectId) {
 		await this.reviewModel.findByIdAndRemove(reviewId).exec();
 	}
 }

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, Type } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import {
 	BOOKS_MODEL,
@@ -6,12 +6,11 @@ import {
 	DEFAULT_LIMIT,
 	DEFAULT_PAGE,
 } from './books.constants';
-import { AgeLimit, Book, Order, SortBookValues } from './entitites/book.entity';
-import { Model, PipelineStage, Types, mongo } from 'mongoose';
-import { CreateBookDto } from './dto/create-book.dto';
+import { AgeLimit, Book, Order, SortBookValues } from './entitites';
+import { Model, PipelineStage, Types } from 'mongoose';
+import { CreateBookDto, UpdateBookDto } from './dto';
 import { REVIEW_COLLECTION } from 'src/reviews/review.constants';
-import { PaginationResponse } from 'src/responses/pagination.response';
-import { UpdateBookDto } from './dto/update-book.dto';
+import { PaginationResponse } from 'src/responses';
 
 @Injectable()
 export class BooksService {
@@ -145,19 +144,6 @@ export class BooksService {
 						ageLimitFilter,
 						publishmentFilter,
 					],
-				},
-			},
-			{
-				$project: {
-					id: 1,
-					title: 1,
-					author: 1,
-					totalReviews: 1,
-					rating: 1,
-					titleImage: 1,
-					oldPrice: 1,
-					price: 1,
-					discount: 1,
 				},
 			},
 		];

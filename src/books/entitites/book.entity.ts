@@ -96,5 +96,9 @@ BookSchema.virtual('id').get(function () {
 });
 
 BookSchema.virtual('price').get(function () {
-	return Math.ceil((this.oldPrice * (100 - this.discount)) / 100);
+	return calculatePrice(this.oldPrice, this.discount);
 });
+
+export const calculatePrice = (oldPrice: number, discount: number) => {
+	return Math.ceil((oldPrice * (100 - discount)) / 100);
+};

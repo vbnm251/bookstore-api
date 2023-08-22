@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getMongoConfig } from './configs/mongo.config';
 import { BooksModule } from './books/books.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { CommonModule } from './common';
 
 @Module({
 	imports: [
@@ -16,6 +17,7 @@ import { ReviewsModule } from './reviews/reviews.module';
 			inject: [ConfigService],
 			useFactory: getMongoConfig,
 		}),
+		CommonModule,
 		AuthModule,
 		BooksModule,
 		ReviewsModule,

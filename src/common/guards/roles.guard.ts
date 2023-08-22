@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, ForbiddenException, mixin } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { FORBIDDEN_ACCESS } from '../auth.constants';
+import { FORBIDDEN_ACCESS } from '../../auth/auth.constants';
 
 export const RoleGuard = (...roles: string[]) => {
 	class RoleGuardMixin implements CanActivate {

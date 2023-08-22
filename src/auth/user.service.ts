@@ -2,16 +2,23 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { USER_MODEL } from './auth.constants';
-import { RegisterDto } from './dto/register.dto';
-import { Roles, User } from './entities/user.entity';
+import { RegisterDto } from './dto';
+import { Roles, User } from './entities';
+import { CART_MODEL } from 'src/cart/cart.constants';
+import { Cart } from 'src/cart/entities';
 
 @Injectable()
 export class UserService {
-	constructor(@InjectModel(USER_MODEL) private readonly userModel: Model<User>) {}
+	constructor(
+		@InjectModel(USER_MODEL) private readonly userModel: Model<User>,
+		@InjectModel(CART_MODEL) private readonly cartModel: Model<Cart>,
+	) {}
 
 	async saveUser(dto: RegisterDto, hashedPassword: string, role: Roles = Roles.USER) {
 		const user = await this.parseUserModel(dto, hashedPassword, role);
-		return this.userModel.create(user);
+		const createdUser = await this.userModel.create(user);
+		await this.cartModel.create({ user: createdUser._id, products: [] });
+		return createdUser;
 	}
 
 	async findUser(email?: string, username?: string) {

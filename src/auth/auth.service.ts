@@ -15,10 +15,9 @@ import {
 import { Roles, User } from './entities/user.entity';
 import { compare, genSalt, hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { JwtPaylod, JwtTokenExpiresIn } from 'src/configs/jwt.config';
-import { RegisterDto } from './dto/register.dto';
+import { JwtPaylod, JwtTokenExpiresIn } from 'src/configs';
+import { RegisterDto, LoginDto } from './dto';
 import { UserService } from './user.service';
-import { LoginDto } from './dto/login.dto';
 import { Types } from 'mongoose';
 
 @Injectable()
